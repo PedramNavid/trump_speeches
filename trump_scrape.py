@@ -33,8 +33,8 @@ for idx, link in enumerate(links):
         text_file.write('\n')
         text_file.write(speech)
 
-with open(os.path.join("data", "full_speech.txt"), "w" as txt:
+with open(os.path.join("data", "full_speech.txt"), "w") as txt:
           for s in speeches:
-            txt.write("%s\n", % item)
+            txt.write("%s\n" % s)
 if __name__ == '__main__':
     print speeches[1][:100] 
