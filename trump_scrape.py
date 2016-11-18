@@ -1,3 +1,5 @@
+import numpy as np
+import pandas as pd
 import requests
 import bs4
 import os
@@ -33,8 +35,14 @@ for idx, link in enumerate(links):
         text_file.write('\n')
         text_file.write(speech)
 
+# Create dataframe
+d = {'title' : pd.Series([l[0] for l in links]),
+     'link' : pd.Series([base_url + l[1][3:] for l in links]),
+     'speech': pd.Series(speeches)}
+df = pd.DataFrame(d)
+
 with open(os.path.join("data", "full_speech.txt"), "w") as txt:
           for s in speeches:
             txt.write("%s\n" % s)
 if __name__ == '__main__':
-    print speeches[1][:100] 
+    df
