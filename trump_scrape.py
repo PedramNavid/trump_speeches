@@ -30,7 +30,7 @@ for idx, link in enumerate(links):
     speech = scrape.select('span.displaytext')[0].text.encode('utf-8')
     speeches.append(speech)
     with open(os.path.join("data", 
-                           "speech_" + str(idx) + ".txt"), "w") as text_file:
+                           "speech_" + str(idx).rjust(2, "0") + ".txt"), "w") as text_file:
         text_file.write(link[0])
         text_file.write('\n')
         text_file.write(speech)
