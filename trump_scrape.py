@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 
-import numpy as np
+import re
 import pandas as pd
 import requests
 import bs4
@@ -30,6 +30,12 @@ for idx, link in enumerate(links):
     url = base_url + link[1][3:]
     res = requests.get(url)
     cleaned_text = res.text.replace("<p>", " <p>")
+    if type(cleaned_text) != str:
+      cleaned_text = cleaned_text.decode()
+    cleaned_text = re.sub("\[(\s|\w|<i>|</i>)*\]", "", cleaned_text)
+    cleaned_text = re.sub("(<i>)(\w|\s)+(</i>)\s*(.|:)", "", cleaned_text)
+    cleaned_text = re.sub("(<span)(\w|\s|\"|>|=)*Remarks(\w|\s|\"|>|=|,|\d)*(</span>)",
+                          "", cleaned_text)
 
     scrape = bs4.BeautifulSoup(cleaned_text, 'lxml')
     speech = scrape.select('span.displaytext')[0].text.encode('utf-8')
