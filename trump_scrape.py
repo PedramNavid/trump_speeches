@@ -1,3 +1,6 @@
+from __future__ import print_function
+
+
 import numpy as np
 import pandas as pd
 import requests
@@ -23,16 +26,20 @@ for e in elems:
 # Grab individual speeches
 speeches = []
 for idx, link in enumerate(links):
-    print "Grabbing speech: ", idx + 1
+    print("Grabbing speech: ", idx + 1)
     url = base_url + link[1][3:]
     res = requests.get(url)
-    scrape = bs4.BeautifulSoup(res.text, 'lxml')
+    cleaned_text = res.text.replace("<p>", " <p>")
+
+    scrape = bs4.BeautifulSoup(cleaned_text, 'lxml')
     speech = scrape.select('span.displaytext')[0].text.encode('utf-8')
     speeches.append(speech)
     with open(os.path.join("data", 
                            "speech_" + str(idx).rjust(2, "0") + ".txt"), "w") as text_file:
         text_file.write(link[0])
         text_file.write('\n')
+        if type(speech) != str:
+          speech = speech.decode()
         text_file.write(speech)
 
 # Create dataframe
